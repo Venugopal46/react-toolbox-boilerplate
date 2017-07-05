@@ -1,0 +1,6 @@
+.homePage {
+    background: #ccc;
+    & p {
+        color: red;
+    }
+} 
