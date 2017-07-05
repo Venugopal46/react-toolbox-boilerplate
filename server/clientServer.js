@@ -20,7 +20,6 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use('/*', (req, res) => {
   if (req.get('host') !== undefined) {
     const url = `${req.protocol}://${req.get('host')}`;
-    console.log(`Url ${url}`);
     const newReq = http.request(url, (newRes) => {
       newRes.pipe(res);
     });
