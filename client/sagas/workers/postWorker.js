@@ -4,7 +4,6 @@ import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import * as types from '../../constants/actionTypes';
 
-
 export function* getPost() {
   try {
     const id = Math.floor(Math.random() * 100);
@@ -14,4 +13,3 @@ export function* getPost() {
     yield put({ type: types.GET_POST_ERROR });
   }
 }
-

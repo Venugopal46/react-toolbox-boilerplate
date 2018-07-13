@@ -1,10 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  mode: 'development',
+  devtool: 'cheap-module-eval-source-map',
   entry: {
     bundle: [
       'webpack/hot/dev-server',
@@ -14,12 +15,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].[hash].js'
-  },
-  devServer: {
-    historyApiFallback: true,
-    contentBase: './client',
-    hot: true
+    filename: '[name].[hash].js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -30,46 +27,59 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss-loader']
-        })
+        include: path.join(__dirname, 'node_modules/react-toolbox'),
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[name]_[local]_[hash:base64:5]'
+            }
+          },
+          'postcss-loader'
+        ]
       },
       {
-        test: /\.scss$/,
-        include: /client/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss-loader', 'sass-loader']
-        })
+        test: /\.pcss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[name]_[local]_[hash:base64:5]'
+            }
+          },
+          'postcss-loader'
+        ]
       },
       {
-        test: /\.scss$/,
-        exclude: /client/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader', 'sass-loader']
-        })
+        test: /\.css$/,
+        exclude: path.join(__dirname, 'node_modules/react-toolbox'),
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(jpe?g|svg|png|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 40000
-            }
-          }
-        ]
+        use: ['file-loader']
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['file-loader']
       }
     ]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new ExtractTextPlugin({ filename: 'styles.[contenthash:8].css' }),
-    new HtmlWebpackPlugin({
-      template: 'client/index.html'
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+    new HtmlWebpackPlugin({
+      template: 'client/index.html',
     })
   ]
 };

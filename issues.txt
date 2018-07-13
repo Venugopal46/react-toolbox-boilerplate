@@ -1,0 +1,19 @@
+upgrading from webpack v2 to v4
+
+react-toolbox problems
+
+https://github.com/csstools/postcss-preset-env/issues/32 => has info about many solutions (custom-properties, postcss-calc, variables, postcss-custom-properties preserve, nesting-rules)
+
+1. extract-text-webpack-plugin => mini-css-extract-plugin
+
+2. postcss-cssnext => postcss-preset-env, postcss-custom-properties, postcss-calc, postcss-color-function
+
+3. Error: composition is only allowed when selector is single :local class name not in ".raised", ".raised" is weird
+
+for css-loader, set modules to true
+{
+  loader: 'css-loader',
+  options: {
+    modules: true,
+  }
+}

@@ -1,16 +1,50 @@
-const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
 
 module.exports = {
-  devtool: 'source-map',
+  mode: 'production',
+  devtool: 'cheap-source-map',
   entry: {
     bundle: './client/index.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].[chunkhash].js'
+  },
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest',
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true
+      }),
+      new OptimizeCssAssetsPlugin({
+        cssProcessor: cssnano,
+        cssProcessorOptions: {
+          safe: true,
+          discardComments: {
+            removeAll: true
+          }
+        }
+      })
+    ],
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
   },
   module: {
     rules: [
@@ -20,57 +54,59 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.pcss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[name]_[local]_[hash:base64:5]'
+            }
+          },
+          'postcss-loader'
+        ]
+      },
+      {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          loader: 'css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-        })
+        include: path.join(__dirname, 'node_modules/react-toolbox'),
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[name]_[local]_[hash:base64:5]'
+            }
+          },
+          'postcss-loader'
+        ]
       },
       {
-        test: /\.scss$/,
-        include: /client/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader', 'sass-loader']
-        })
-      },
-      {
-        test: /\.scss$/,
-        exclude: /client/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader', 'sass-loader']
-        })
+        test: /\.css$/,
+        exclude: path.join(__dirname, 'node_modules/react-toolbox'),
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.(jpe?g|svg|png|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 40000
-            }
-          }
-        ]
+        use: ['file-loader']
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['file-loader']
       }
     ]
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks(module) {
-        const context = module.context;
-        return context && context.indexOf('node_modules') >= 0;
-      },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'manifest' }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: { warnings: true }
-    }),
     new HtmlWebpackPlugin({
       template: 'dist/index.html'
     }),
-    new ExtractTextPlugin({ filename: 'styles.[contenthash:8].css' }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css'
     })
   ]
 };

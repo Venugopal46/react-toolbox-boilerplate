@@ -1,4 +1,4 @@
-/* eslint-disable no-constant-condition */
+/* eslint-disable no-constant-condition, import/prefer-default-export */
 
 import { call, take } from 'redux-saga/effects';
 import * as types from '../../constants/actionTypes';
@@ -10,4 +10,3 @@ export function* watchGetPost() {
     yield call(postWorker.getPost);
   }
 }
-

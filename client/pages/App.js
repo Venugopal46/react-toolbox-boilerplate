@@ -5,9 +5,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 class App extends React.Component {
   render() {
+    const { children } = this.props;
     return (
       <div>
-        {this.props.children}
+        {children}
       </div>
     );
   }
