@@ -17,3 +17,6 @@ for css-loader, set modules to true
     modules: true,
   }
 }
+
+
+https://www.npmjs.com/package/cost-of-modules

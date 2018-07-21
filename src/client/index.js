@@ -1,17 +1,19 @@
 /* eslint-disable import/default */
 import 'babel-polyfill';
 import React from 'react';
-import { Router, browserHistory } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import routes from './routes';
+import App from './pages/App';
 import configureStore from './store/configureStore';
 
 const store = configureStore();
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('app')
 );
