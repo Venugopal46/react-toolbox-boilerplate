@@ -22,7 +22,7 @@ export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(
     rootReducer,
     initialState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // eslint-disable-line
   );
   sagaMiddleWare.run(rootSaga);
   return store;

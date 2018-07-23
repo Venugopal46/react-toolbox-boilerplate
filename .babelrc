@@ -1,9 +1,3 @@
 {
-  "presets": ["react", "env"],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    }
-  },
-  "plugins": ["transform-object-rest-spread"]
+  "presets": ["env"]
 }

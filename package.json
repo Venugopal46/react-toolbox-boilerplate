@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel open:src",
-    "open:src": "nodemon --watch server --exec babel-node server/clientServer.js",
+    "start": "nodemon --watch server --watch client --exec babel-node src/server/index.js",
     "lint": "node_modules/.bin/esw webpack.config.* client tools",
-    "clean-dist": "npm run remove-dist && mkdir dist",
-    "remove-dist": "node_modules/.bin/rimraf ./dist",
-    "build:html": "babel-node tools/buildHtml.js",
-    "prebuild": "npm-run-all clean-dist build:html",
-    "build": "babel-node tools/build.js",
-    "postbuild": "nodemon server/distServer.js"
+    "clear": "node_modules/.bin/rimraf dist",
+    "prebuild": "npm run clear",
+    "build:server": "babel -d dist/server ./src/server/",
+    "build": "babel-node tools/build.js && npm run build:server",
+    "postbuild": "nodemon dist/server/index.js"
   },
   "author": "Venugopal46",
   "repository": {
@@ -29,7 +27,7 @@
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-redux": "5.0.7",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "4.3.1",
     "react-toolbox": "2.0.0-beta.13",
     "redux": "4.0.0",
     "redux-saga": "0.16.0"
@@ -42,7 +40,6 @@
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
-    "babel-preset-react-hmre": "1.1.1",
     "babel-register": "6.26.0",
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "0.28.11",
@@ -58,7 +55,6 @@
     "http": "0.0.0",
     "mini-css-extract-plugin": "0.4.1",
     "nodemon": "1.17.5",
-    "npm-run-all": "4.1.3",
     "optimize-css-assets-webpack-plugin": "4.0.3",
     "postcss": "6.0.23",
     "postcss-calc": "6.0.1",
@@ -68,6 +64,7 @@
     "postcss-loader": "2.1.5",
     "postcss-preset-env": "5.2.1",
     "prop-types": "15.6.2",
+    "react-hot-loader": "4.3.3",
     "redux-immutable-state-invariant": "2.1.0",
     "rimraf": "2.6.2",
     "style-loader": "0.21.0",
@@ -76,5 +73,6 @@
     "webpack-cli": "3.0.8",
     "webpack-dev-middleware": "3.1.3",
     "webpack-hot-middleware": "2.22.2"
-  }
+  },
+  "sideEffects": false
 }

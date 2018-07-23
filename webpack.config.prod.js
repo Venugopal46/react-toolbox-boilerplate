@@ -1,18 +1,22 @@
-const path = require('path');
+const { resolve } = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 
+const ROOT = resolve(__dirname);
+const SRC = resolve(ROOT, 'src');
+
 module.exports = {
   mode: 'production',
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   entry: {
-    bundle: './client/index.js'
+    bundle: resolve(SRC, 'client', 'index.js'),
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: resolve(ROOT, 'dist', 'client'),
     filename: '[name].[chunkhash].js'
   },
   optimization: {
@@ -71,7 +75,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: path.join(__dirname, 'node_modules/react-toolbox'),
+        include: resolve(__dirname, 'node_modules', 'react-toolbox'),
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -88,7 +92,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: path.join(__dirname, 'node_modules/react-toolbox'),
+        exclude: resolve(__dirname, 'node_modules', 'react-toolbox'),
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
@@ -103,10 +107,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'dist/index.html'
+      template: resolve(SRC, 'client', 'index.html')
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'
-    })
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
   ]
 };
