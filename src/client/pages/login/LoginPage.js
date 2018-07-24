@@ -8,13 +8,17 @@ import * as loginActions from '../../actions/loginActions';
 import styles from './loginStyles.pcss';
 
 class LoginPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedIn: props.loggedIn
-    };
-    this.login = this.login.bind(this);
+  static propTypes = {
+    actions: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
   }
+
+  /* eslint-disable react/destructuring-assignment */
+  state = {
+    loggedIn: this.props.loggedIn
+  }
+  /* eslint-enable react/destructuring-assignment */
 
   componentWillReceiveProps(nextProps) {
     const { loggedIn } = nextProps;
@@ -26,7 +30,7 @@ class LoginPage extends React.Component {
     }
   }
 
-  login() {
+  login = () => {
     const { actions } = this.props;
     actions.setLoginStatue(true);
   }
@@ -45,12 +49,6 @@ class LoginPage extends React.Component {
     );
   }
 }
-
-LoginPage.propTypes = {
-  actions: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  loggedIn: PropTypes.bool.isRequired,
-};
 
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn

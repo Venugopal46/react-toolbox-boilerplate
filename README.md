@@ -16,7 +16,3 @@
 
  * dev mode: `npm start`
  * production mode: `npm run build`
-
-Sample app code by Brad Westfall
-https://css-tricks.com/react-router-4/
-https://codepen.io/bradwestfall/project/editor/XWNWge?preview_height=50
