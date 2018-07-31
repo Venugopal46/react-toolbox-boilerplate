@@ -2,11 +2,11 @@
 
 import { call, take } from 'redux-saga/effects';
 import * as types from '../../constants/actionTypes';
-import * as postWorker from '../workers/postWorker';
+import * as usersWorker from '../workers/usersWorker';
 
-export function* watchGetPost() {
+export function* watchGetUsers() {
   while (true) {
-    yield take(types.GET_POST);
-    yield call(postWorker.getPost);
+    yield take(types.GET_USERS);
+    yield call(usersWorker.getUsers);
   }
 }

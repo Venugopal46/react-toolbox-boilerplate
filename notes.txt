@@ -18,5 +18,6 @@ for css-loader, set modules to true
   }
 }
 
-
 https://www.npmjs.com/package/cost-of-modules
+
+you can't catch errors from forked tasks. A failure in an attached fork will cause the forking parent to abort

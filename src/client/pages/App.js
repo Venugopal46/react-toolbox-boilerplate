@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, NavLink } from 'react-router-dom';
 import { Button } from 'react-toolbox/lib/button';
 import Posts from './posts/Posts';
+import Users from './users/Users';
 import ProtectedHome from './home/ProtectedHome';
 
 class App extends React.Component {
@@ -11,12 +12,13 @@ class App extends React.Component {
     return (
       <div className="primary-layout">
         <h1>Protected Page</h1>
-        <Link to={`${match.url}/posts`}>Open posts</Link><br /><br />
+        <Link to="/logout"><Button label="Logout" raised /></Link><br /><br />
+        <NavLink to={`${match.url}/posts`}>Posts</NavLink> | <NavLink to={`${match.url}/users`}>Users</NavLink><br /><br />
         <Switch>
           <Route path={`${match.url}`} component={ProtectedHome} exact />
           <Route path={`${match.url}/posts`} component={Posts} />
+          <Route path={`${match.url}/users`} component={Users} />
         </Switch>
-        <Link to="/logout"><Button label="Logout" raised /></Link>
       </div>
     );
   }

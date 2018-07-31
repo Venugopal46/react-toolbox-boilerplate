@@ -9,23 +9,22 @@ import styles from './postsStyles.pcss';
 class Posts extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.getPost = this.getPost.bind(this);
+    this.getPosts = this.getPosts.bind(this);
   }
 
-  getPost() {
+  getPosts() {
     const { actions } = this.props;
-    actions.getPost();
+    actions.getPosts();
   }
 
   render() {
-    const { post } = this.props;
+    const { posts } = this.props;
     return (
       <div className={styles.posts}>
-        <Button label="Get Post" raised primary onClick={this.getPost} />
-        <p>
-          Post Title:
-          {post.title}
-        </p>
+        <Button label="Get Posts" raised primary onClick={this.getPosts} />
+        <ul>
+          {posts.map(post => <li key={post.id}>{post.title}</li>)}
+        </ul>
       </div>
     );
   }
@@ -33,12 +32,12 @@ class Posts extends React.Component {
 
 Posts.propTypes = {
   actions: PropTypes.object.isRequired,
-  post: PropTypes.object
+  posts: PropTypes.array
 };
 
 function mapStateToProps(state) {
   return {
-    post: state.post
+    posts: state.posts
   };
 }
 

@@ -1,5 +1,9 @@
-export const GET_POST = 'GET_POST';
-export const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
-export const GET_POST_ERROR = 'GET_POST_ERROR';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
+export const GET_POSTS_ERROR = 'GET_POSTS_ERROR';
+
+export const GET_USERS = 'GET_USERS';
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
+export const GET_USERS_ERROR = 'GET_USERS_ERROR';
 
 export const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS';
