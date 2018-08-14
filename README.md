@@ -1,6 +1,6 @@
 # react-toolbox-boilerplate
 
-**Clone the project** 
+**Clone the project**
 
 `git clone https://github.com/Venugopal46/react-toolbox-boilerplate.git`.
 

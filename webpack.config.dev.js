@@ -1,20 +1,23 @@
 const webpack = require('webpack');
-const path = require('path');
+const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const ROOT = resolve(__dirname);
+const SRC = resolve(ROOT, 'src');
 
 module.exports = {
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
   entry: {
     bundle: [
-      'webpack/hot/dev-server',
+      'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
-      './client/index.js'
+      resolve(SRC, 'client', 'index.js'),
     ]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: resolve(ROOT, 'dist', 'client'),
     filename: '[name].[hash].js',
     publicPath: '/'
   },
@@ -27,7 +30,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: path.join(__dirname, 'node_modules/react-toolbox'),
+        include: resolve(__dirname, 'node_modules', 'react-toolbox'),
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -60,7 +63,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: path.join(__dirname, 'node_modules/react-toolbox'),
+        exclude: resolve(__dirname, 'node_modules', 'react-toolbox'),
         use: ['style-loader', 'css-loader']
       },
       {
@@ -79,7 +82,7 @@ module.exports = {
       filename: '[name].css'
     }),
     new HtmlWebpackPlugin({
-      template: 'client/index.html',
+      template: resolve(SRC, 'client', 'index.html'),
     })
   ]
 };
